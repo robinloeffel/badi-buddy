@@ -11,6 +11,12 @@ const badis: Record<Badi["name"], string> = {
   "wyler": "https://www.sportamt-bern.ch/sportanlage/freibad-wyler/"
 };
 
+const occupancyStatusMap: Record<string, string> = {
+  "status-0": "Viu",
+  "status-1": "Weni",
+  "status-2": "Mittu"
+};
+
 // eslint-disable-next-line max-statements
 export const GET: RequestHandler = async ({ params }) => {
   const { name } = params;
@@ -19,22 +25,21 @@ export const GET: RequestHandler = async ({ params }) => {
     return new Response("Invalid Badi name", { status: 400 });
   }
 
-  const badiUrl = badis[name];
-  const response = await fetch(badiUrl);
+  const url = badis[name];
+  const response = await fetch(url);
   const html = await response.text();
+  const { document } = new JSDOM(html).window;
 
-  const markup = new JSDOM(html).window.document;
-  const facilityStatusBox = markup.querySelector(".facility-status-box");
-  const [
-    airTemperature = "n/a",
-    waterTemperature = "n/a"
-  ] = [...facilityStatusBox?.querySelectorAll(".degree span") ?? []].map(node => node.textContent?.trim());
-  const occupancy = facilityStatusBox?.querySelector(".personen")?.classList.item(1) ?? "n/a";
+  const facilityStatusNode = document.querySelector<HTMLDivElement>(".facility-status-box");
+  const occupancyNode = facilityStatusNode?.querySelector<HTMLSpanElement>(".personen");
+  const temperatureNodes = facilityStatusNode?.querySelectorAll<HTMLSpanElement>(".degree span");
+  const airTemperatureNode = temperatureNodes?.item(0);
+  const waterTemperatureNode = temperatureNodes?.item(1);
+  const occupancyClass = occupancyNode?.classList.item(1) ?? "";
 
-  return json({
-    name,
-    airTemperature,
-    waterTemperature,
-    occupancy
-  });
+  const occupancy = occupancyStatusMap[occupancyClass] ?? "--";
+  const air = airTemperatureNode?.textContent?.trim() ?? "--";
+  const water = waterTemperatureNode?.textContent?.trim() ?? "--";
+
+  return json({ name, air, water, occupancy, url });
 };

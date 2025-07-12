@@ -1,0 +1,11 @@
+@use "@fontsource-utils/scss" as fontsource;
+@use "@fontsource-variable/inter/scss" as inter;
+@use "@fontsource-variable/playfair-display/scss" as playfair-display;
+@include fontsource.faces(
+  $metadata: inter.$metadata,
+  $subsets: "latin"
+);
+@include fontsource.faces(
+  $metadata: playfair-display.$metadata,
+  $subsets: "latin"
+);
