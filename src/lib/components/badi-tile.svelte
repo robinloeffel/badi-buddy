@@ -2,7 +2,8 @@
   export interface Badi {
     name: "weyermannshaus" | "ka-we-de" | "lorraine" | "marzili" | "wyler";
     air: string;
-    water: string;
+    pool: string;
+    aare: string | null;
     occupancy: string;
     url: string;
   }
@@ -23,8 +24,8 @@
     && isBadiName(badi.name)
     && "air" in badi
     && typeof badi.air === "string"
-    && "water" in badi
-    && typeof badi.water === "string"
+    && "pool" in badi
+    && typeof badi.pool === "string"
     && "occupancy" in badi
     && typeof badi.occupancy === "string"
     && "url" in badi
@@ -42,16 +43,10 @@
 
   let isLoaded = $state(false);
   let air = $state<Badi["air"]>("");
-  let water = $state<Badi["water"]>("");
+  let pool = $state<Badi["pool"]>("");
+  let aare = $state<Badi["aare"]>(null);
   let occupancy = $state<Badi["occupancy"]>("");
   let url = $state<string>();
-
-  const formattedAir = $derived(
-    air === "--" ? air : `${air} °C`
-  );
-  const formattedWater = $derived(
-    water === "--" ? water : `${water} °C`
-  );
 
   const getBadiData = async () => {
     const response = await fetch(`/api/badi/${name}`);
@@ -59,7 +54,7 @@
     const data = await response.json();
 
     if (isBadi(data)) {
-      ({ air, water, occupancy, url } = data);
+      ({ air, pool, aare, occupancy, url } = data);
       isLoaded = true;
     }
   };
@@ -74,8 +69,8 @@
     <h2 class="title">{title}</h2>
   </div>
   <div class="body">
-    <span>Luft:</span> <span>{formattedAir}</span>
-    <span>Wasser:</span> <span>{formattedWater}</span>
+    <span>Luft:</span> <span>{air}</span>
+    <span>Wasser:</span> <span>{pool} {#if aare}/ {aare}{/if}</span>
     <span>Lüt:</span> <span>{occupancy}</span>
   </div>
   <div class="footer">
@@ -89,6 +84,7 @@
   .badi-tile {
     position: relative;
     display: inline-block;
+    contain: content;
     overflow: clip;
     border: 1px solid #333;
     border-radius: 0.5rem;

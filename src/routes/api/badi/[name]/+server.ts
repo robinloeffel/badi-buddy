@@ -17,6 +17,11 @@ const occupancyStatusMap: Record<string, string> = {
   "status-2": "Mittu"
 };
 
+const formatTemperature = (temperature?: string) => {
+  const numberValue = Number(temperature);
+  return Number.isNaN(numberValue) ? "--" : `${String(Math.round(numberValue))} °C`;
+};
+
 // eslint-disable-next-line max-statements
 export const GET: RequestHandler = async ({ params, setHeaders }) => {
   const { name } = params;
@@ -34,16 +39,18 @@ export const GET: RequestHandler = async ({ params, setHeaders }) => {
   const occupancyNode = facilityStatusNode?.querySelector<HTMLSpanElement>(".personen");
   const temperatureNodes = facilityStatusNode?.querySelectorAll<HTMLSpanElement>(".degree span");
   const airTemperatureNode = temperatureNodes?.item(0);
-  const waterTemperatureNode = temperatureNodes?.item(1);
+  const poolTemperatureNode = temperatureNodes?.item(1);
+  const aareTemperatureNode = temperatureNodes?.item(2);
   const occupancyClass = occupancyNode?.classList.item(1) ?? "";
 
   const occupancy = occupancyStatusMap[occupancyClass] ?? "--";
-  const air = airTemperatureNode?.textContent?.trim() ?? "--";
-  const water = waterTemperatureNode?.textContent?.trim() ?? "--";
+  const air = formatTemperature(airTemperatureNode?.textContent?.trim());
+  const pool = formatTemperature(poolTemperatureNode?.textContent?.trim());
+  const aare = aareTemperatureNode ? formatTemperature(aareTemperatureNode.textContent?.trim()) : null;
 
   setHeaders({
     "Cache-Control": "max-age=600, immutable"
   });
 
-  return json({ name, air, water, occupancy, url });
+  return json({ name, air, pool, aare, occupancy, url });
 };
