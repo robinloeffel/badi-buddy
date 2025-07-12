@@ -18,7 +18,7 @@ const occupancyStatusMap: Record<string, string> = {
 };
 
 // eslint-disable-next-line max-statements
-export const GET: RequestHandler = async ({ params }) => {
+export const GET: RequestHandler = async ({ params, setHeaders }) => {
   const { name } = params;
 
   if (!isBadiName(name)) {
@@ -40,6 +40,10 @@ export const GET: RequestHandler = async ({ params }) => {
   const occupancy = occupancyStatusMap[occupancyClass] ?? "--";
   const air = airTemperatureNode?.textContent?.trim() ?? "--";
   const water = waterTemperatureNode?.textContent?.trim() ?? "--";
+
+  setHeaders({
+    "Cache-Control": "max-age=600, immutable"
+  });
 
   return json({ name, air, water, occupancy, url });
 };
