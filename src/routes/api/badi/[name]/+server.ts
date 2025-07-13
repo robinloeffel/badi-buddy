@@ -1,4 +1,4 @@
-import { type Badi, isBadiName } from "$lib/components/badi-tile.svelte";
+import { type Badi, isBadiName } from "$components/badi-tile.svelte";
 import { json } from "@sveltejs/kit";
 import { JSDOM } from "jsdom";
 import type { RequestHandler } from "./$types";

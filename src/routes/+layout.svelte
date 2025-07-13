@@ -15,8 +15,10 @@
 <svelte:head>
   <link as="font" crossorigin="anonymous" href={inter} rel="preload" type="font/woff2" />
   <link as="font" crossorigin="anonymous" href={playfairDisplay} rel="preload" type="font/woff2" />
-  <title>Badi Buddy</title>
   <meta charset="utf-8" />
+  <title>Badi Buddy</title>
+  <meta name="description" content="E gäbigi Übersicht für d Badis ir Stadt Bärn." />
+  <meta name="keywords" content="badi, bern, freibad" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link href={favicon} rel="icon" type="image/avif" />
 </svelte:head>

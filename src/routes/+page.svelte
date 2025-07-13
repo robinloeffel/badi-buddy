@@ -1,5 +1,5 @@
 <script lang="ts">
-  import BadiTile from "$lib/components/badi-tile.svelte";
+  import BadiTile from "$components/badi-tile.svelte";
 </script>
 
 <h1 class="title">Badi Buddy</h1>

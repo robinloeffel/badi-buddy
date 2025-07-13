@@ -7,11 +7,9 @@ export default {
   kit: {
     adapter: vercel(),
     alias: {
-      $components: "./src/lib/components/index.ts",
+      $components: "./src/lib/components",
       $styles: "./src/lib/styles",
-      $img: "./src/lib/img",
-      $utils: "./src/lib/utils/index.ts",
-      $generated: "./src/lib/generated"
+      $img: "./src/lib/img"
     }
   }
 };
