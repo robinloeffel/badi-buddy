@@ -1,0 +1,81 @@
+import { json, text } from "@sveltejs/kit";
+import { XMLParser } from "fast-xml-parser";
+import type { RequestHandler } from "./$types";
+
+interface ZurichData {
+  "?xml": string;
+  "bathinfos": {
+    baths: ZurichDataBaths;
+    meta: ZurichDataMeta;
+  };
+}
+
+interface ZurichDataBaths {
+  bath: ZurichDataBath[];
+}
+
+interface ZurichDataBath {
+  title: string;
+  temperatureWater: number;
+  poiid: string;
+  dateModified: string;
+  openClosedTextPlain: string;
+  urlPage: string;
+  pathPage: string;
+}
+
+interface ZurichDataMeta {
+  version: number;
+  releasenotes: string;
+  deprecated: string;
+  contactEmail: string;
+  dateformat: string;
+  urlLegal: string;
+  dateTimeSent: string;
+  latestDateModified: string;
+  outputformat: {
+    requestParamName: "outputformat";
+    supportedformats: "XML";
+    defaultformat: "XML";
+  };
+  orderedBy: {
+    property: "title";
+    mode: "ascending";
+  };
+}
+
+const isZurichData = (data: unknown): data is ZurichData => (
+  typeof data === "object"
+  && data !== null
+  && "?xml" in data
+  && "bathinfos" in data
+  && typeof data.bathinfos === "object"
+  && data.bathinfos !== null
+  && "baths" in data.bathinfos
+  && "meta" in data.bathinfos
+);
+
+const parseZurichXml = (data: string) => {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+  const parsed = new XMLParser().parse(data) as unknown;
+  return isZurichData(parsed) ? parsed : null;
+};
+
+export const GET: RequestHandler = async ({ setHeaders }) => {
+  const zueriUrl = "https://www.stadt-zuerich.ch/stzh/bathdatadownload";
+  const xmlResponse = await fetch(zueriUrl);
+  const xmlText = await xmlResponse.text();
+  const data = parseZurichXml(xmlText);
+
+  if (!data) {
+    return text("invalid data", {
+      status: 500
+    });
+  }
+
+  setHeaders({ "Cache-Control": "max-age=600, immutable" });
+  return json(data.bathinfos.baths.bath.map(bath => ({
+    title: bath.title,
+    water: `${String(bath.temperatureWater)}°C`
+  })));
+};

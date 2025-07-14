@@ -48,9 +48,6 @@ export const GET: RequestHandler = async ({ params, setHeaders }) => {
   const pool = formatTemperature(poolTemperatureNode?.textContent?.trim());
   const aare = aareTemperatureNode ? formatTemperature(aareTemperatureNode.textContent?.trim()) : null;
 
-  setHeaders({
-    "Cache-Control": "max-age=600, immutable"
-  });
-
+  setHeaders({ "Cache-Control": "max-age=600, immutable" });
   return json({ name, air, pool, aare, occupancy, url });
 };

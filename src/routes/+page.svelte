@@ -1,5 +1,16 @@
 <script lang="ts">
   import BadiTile from "$components/badi-tile.svelte";
+
+  const getZueriBadiData = async () => {
+    const zueriBadisRequest = await fetch("/api/badis/zuerich");
+    const zueriBadisResponse = await zueriBadisRequest.json();
+
+    console.log(zueriBadisResponse);
+  };
+
+  $effect(() => {
+    void getZueriBadiData();
+  });
 </script>
 
 <h1 class="title">Badi Buddy</h1>
