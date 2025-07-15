@@ -32,7 +32,7 @@
 </ul>
 <p>
   <small>
-    Date vo: <a href={source.url}>{source.name}</a>.
+    Date vo: <a href={source.url}>{source.name}</a>
   </small>
 </p>
 
@@ -51,7 +51,7 @@
 
     @media (pointer: fine) {
       :not(:has(.hidden)):has(&:hover) > &:hover {
-        translate: 0 -5px;
+        translate: 0 -4px;
       }
 
       :not(:has(.hidden)):has(&:hover) > &:not(:hover) {
@@ -71,9 +71,9 @@
     width: 100%;
     padding: 0.75rem 1rem;
     line-height: 1.1;
-    color: #eee;
+    color: #ddd;
     background: 0;
-    border: 1px solid #333;
+    border: 1px solid #222;
     border-radius: 8px;
   }
 </style>

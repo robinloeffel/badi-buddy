@@ -8,7 +8,7 @@ const getTemperature = (list: NodeListOf<Element>) => {
     const temperatureText = list.item(1).querySelector("span")?.textContent?.trim();
     const temperatureNumber = Number(temperatureText);
 
-    return Number.isNaN(temperatureNumber) ? "Unbekannt" : `${temperatureNumber.toString()}°C`;
+    return Number.isNaN(temperatureNumber) ? "I weiss ni" : `${temperatureNumber.toString()}°C`;
   }
 
   return "I weiss ni";
@@ -22,7 +22,7 @@ export const GET: RequestHandler = async ({ fetch, setHeaders }) => {
 
   const facilities = document.querySelectorAll(".facility-preview-box");
   const badis = [...facilities].map((facility) => {
-    const name = facility.querySelector("h2")?.textContent?.trim() ?? "Unbekannt";
+    const name = facility.querySelector("h2")?.textContent?.trim() ?? "Het äuä ke Name";
     const degreeElements = facility.querySelectorAll(".degree");
     const temperature = getTemperature(degreeElements);
     const open = Boolean(facility.querySelector(".specialhours")?.classList.contains("open"));

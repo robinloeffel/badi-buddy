@@ -5,7 +5,7 @@
   const { data }: PageProps = $props();
 </script>
 
-<h1>Badi Buddy</h1>
+<h1>Badimeister</h1>
 <p>E gäbigi Übersicht für d Badis i de Stedt Bärn u Züri.</p>
 
 <h2>Lufttämperatur</h2>
@@ -16,7 +16,7 @@
 </ul>
 <p>
   <small>
-    Date vo: <a href="https://opendata.swiss/de/dataset/messwerte-lufttemperatur-2-m-10-min-mittel">MeteoSchweiz</a>.
+    Date vo: <a href="https://opendata.swiss/de/dataset/messwerte-lufttemperatur-2-m-10-min-mittel">MeteoSchweiz</a>
   </small>
 </p>
 
