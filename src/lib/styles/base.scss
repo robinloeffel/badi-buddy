@@ -10,6 +10,10 @@
 
 #app {
   display: contents;
+
+  > * + * {
+    margin-top: 1em;
+  }
 }
 
 body {
@@ -29,5 +33,24 @@ h3,
 h4,
 h5,
 h6 {
+  font-family: "Playfair Display Variable", serif;
   line-height: 1.1;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+}
+
+input,
+button,
+select,
+textarea {
+  font: inherit;
+  font-size: 1rem;
+  outline-offset: 4px;
 }

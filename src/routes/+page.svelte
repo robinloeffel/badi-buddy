@@ -1,38 +1,39 @@
 <script lang="ts">
-  import BadiTile from "$components/badi-tile.svelte";
+  import BadiList from "$components/badi-list.svelte";
+  import type { PageProps } from "./$types";
 
-  const getZueriBadiData = async () => {
-    const zueriBadisRequest = await fetch("/api/badis/zuerich");
-    const zueriBadisResponse = await zueriBadisRequest.json();
-
-    console.log(zueriBadisResponse);
-  };
-
-  $effect(() => {
-    void getZueriBadiData();
-  });
+  const { data }: PageProps = $props();
 </script>
 
-<h1 class="title">Badi Buddy</h1>
-<div class="badi-tiles">
-  <BadiTile name="weyermannshaus" title="Weyerli" />
-  <BadiTile name="lorraine" title="Lorraine" />
-  <BadiTile name="marzili" title="Marzili" />
-  <BadiTile name="wyler" title="Wyler" />
-  <BadiTile name="ka-we-de" title="Ka-We-De" />
-</div>
+<h1>Badi Buddy</h1>
+<p>E gäbigi Übersicht für d Badis i de Stedt Bärn u Züri.</p>
 
-<style lang="scss">
-  .title {
-    margin-bottom: 1.5rem;
-    font-family: "Playfair Display Variable", serif;
-    font-size: 3rem;
-    font-weight: normal;
-  }
+<h2>Lufttämperatur</h2>
+<ul>
+  {#each data.air as { id, temperature } (id)}
+    <li>{id === "BER" ? "Bärn" : "Züri"}: {temperature}</li>
+  {/each}
+</ul>
+<p>
+  <small>
+    Date vo: <a href="https://opendata.swiss/de/dataset/messwerte-lufttemperatur-2-m-10-min-mittel">MeteoSchweiz</a>.
+  </small>
+</p>
 
-  .badi-tiles {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-    gap: 1rem;
-  }
-</style>
+<BadiList
+  badis={data.bern}
+  source={{
+    url: "https://www.sportamt-bern.ch/anlagetyp/freibad/",
+    name: "Sportamt Bärn"
+  }}
+  title="Badis ds Bärn"
+/>
+
+<BadiList
+  badis={data.zurich}
+  source={{
+    url: "https://opendata.swiss/de/dataset/wassertemperaturen-freibader",
+    name: "Stadt Züri"
+  }}
+  title="Badis ds Züri"
+/>

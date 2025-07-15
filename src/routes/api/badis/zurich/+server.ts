@@ -1,3 +1,4 @@
+import type { BadiResponse } from "$lib/shared/badi-response";
 import { json, text } from "@sveltejs/kit";
 import { XMLParser } from "fast-xml-parser";
 import type { RequestHandler } from "./$types";
@@ -61,9 +62,9 @@ const parseZurichXml = (data: string) => {
   return isZurichData(parsed) ? parsed : null;
 };
 
-export const GET: RequestHandler = async ({ setHeaders }) => {
-  const zueriUrl = "https://www.stadt-zuerich.ch/stzh/bathdatadownload";
-  const xmlResponse = await fetch(zueriUrl);
+export const GET: RequestHandler = async ({ fetch, setHeaders }) => {
+  const url = "https://www.stadt-zuerich.ch/stzh/bathdatadownload";
+  const xmlResponse = await fetch(url);
   const xmlText = await xmlResponse.text();
   const data = parseZurichXml(xmlText);
 
@@ -73,9 +74,14 @@ export const GET: RequestHandler = async ({ setHeaders }) => {
     });
   }
 
+  const badis: BadiResponse = data.bathinfos.baths.bath.map(bath => ({
+    id: bath.poiid,
+    name: bath.title,
+    temperature: `${bath.temperatureWater.toString()}°C`,
+    open: bath.openClosedTextPlain === "offen",
+    url: bath.urlPage
+  }));
+
   setHeaders({ "Cache-Control": "max-age=600, immutable" });
-  return json(data.bathinfos.baths.bath.map(bath => ({
-    title: bath.title,
-    water: `${String(bath.temperatureWater)}°C`
-  })));
+  return json(badis);
 };
