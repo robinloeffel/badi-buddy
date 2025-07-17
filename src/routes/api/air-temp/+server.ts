@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment  */
 import type { AirResponse } from "$lib/shared/air-response";
 import { json, text } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
@@ -65,7 +64,7 @@ const isEndpointResponse = (data: unknown): data is EndpointResponse => (
 export const GET: RequestHandler = async ({ fetch, setHeaders }) => {
   const url = "https://data.geo.admin.ch/ch.meteoschweiz.messwerte-lufttemperatur-10min/ch.meteoschweiz.messwerte-lufttemperatur-10min_en.json";
   const response = await fetch(url);
-  const data = await response.json();
+  const data: unknown = await response.json();
 
   if (!isEndpointResponse(data)) {
     return text("invalid response format", {

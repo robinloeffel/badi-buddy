@@ -13,22 +13,22 @@
     "@fontsource-utils/scss": "^0.2.1",
     "@fontsource-variable/inter": "^5.2.6",
     "@fontsource-variable/playfair-display": "^5.2.6",
-    "@sveltejs/adapter-vercel": "^5.7.2",
-    "@sveltejs/kit": "^2.24.0",
+    "@sveltejs/adapter-vercel": "^5.8.0",
+    "@sveltejs/kit": "^2.25.0",
     "@sveltejs/vite-plugin-svelte": "^6.1.0",
     "@types/jsdom": "^21.1.7",
     "es-toolkit": "^1.39.7",
     "eslint": "^9.31.0",
     "eslint-config-sweet": "^27.0.0",
-    "eslint-plugin-svelte": "^3.10.1",
+    "eslint-plugin-svelte": "^3.11.0",
     "fast-xml-parser": "^5.2.5",
     "jsdom": "^26.1.0",
     "robins-tsconfig": "^2.0.0",
     "sass": "^1.89.2",
     "stylelint": "^16.21.1",
     "stylelint-config-sweet": "^6.1.0",
-    "svelte": "^5.36.1",
+    "svelte": "^5.36.5",
     "typescript": "^5.8.3",
-    "vite": "^7.0.4"
+    "vite": "^7.0.5"
   }
 }
