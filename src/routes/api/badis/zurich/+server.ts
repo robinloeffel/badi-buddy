@@ -57,8 +57,7 @@ const isZurichData = (data: unknown): data is ZurichData => (
 );
 
 const parseZurichXml = (data: string) => {
-  // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-  const parsed = new XMLParser().parse(data) as unknown;
+  const parsed: unknown = new XMLParser().parse(data);
   return isZurichData(parsed) ? parsed : null;
 };
 
